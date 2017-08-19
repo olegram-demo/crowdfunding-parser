@@ -1,0 +1,32 @@
+{
+  "name": "crowdfunding-parser",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "parse-crowdcube": "node dist/parse-crowdcube.js",
+    "build-ts": "tsc",
+    "watch-ts": "tsc -w"
+  },
+  "author": "Oleg Savvateev",
+  "license": "MIT",
+  "dependencies": {
+    "@types/node": "^8.0.17",
+    "@types/reflect-metadata": "0.0.5",
+    "@types/sqlite3": "^3.1.0",
+    "@types/winston": "^2.3.4",
+    "awaiting": "^3.0.0",
+    "cheerio": "^1.0.0-rc.2",
+    "condense-whitespace": "^1.0.0",
+    "inversify": "^4.3.0",
+    "jquery": "=3.2.1",
+    "moment": "^2.18.1",
+    "phantom": "^4.0.5",
+    "random-array-element-ts": "0.0.4",
+    "reflect-metadata": "^0.1.10",
+    "sqlite3": "^3.1.9",
+    "typeorm": "0.1.0-alpha.34",
+    "typescript": "^2.4.2",
+    "utils-error-to-json": "^1.0.0",
+    "winston": "^2.3.1"
+  }
+}
