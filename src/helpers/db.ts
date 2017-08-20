@@ -8,8 +8,15 @@ export async function saveProjects(projects: Project[]) : Promise<void> {
     logger.info("Cохраняем проекты в БД.")
     const connection = await container.get<Promise<Connection>>("DB")
     const projectRepository = connection.getRepository(Project)
+
+    let photos = await projectRepository
+        .createQueryBuilder("project") 
+        .update({isActive: false})
+        .execute()
+    
     let updatedProjectsCount = 0;
     for (let project of projects) {
+        project.isActive = true
         const savedProject = await projectRepository.findOne({companyName: project.companyName})
         if (savedProject !== undefined) {
             updatedProjectsCount++

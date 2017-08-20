@@ -78,6 +78,9 @@ export default class Project {
     @Column({nullable: true})
     ​​teamHtml: string
 
+    @Column({nullable: true})
+    isActive: boolean
+
     @CreateDateColumn()
     createdAt: string
 
