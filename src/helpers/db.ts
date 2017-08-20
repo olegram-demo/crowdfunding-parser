@@ -9,7 +9,7 @@ export async function saveProjects(projects: Project[]) : Promise<void> {
     const connection = await container.get<Promise<Connection>>("DB")
     const projectRepository = connection.getRepository(Project)
 
-    let photos = await projectRepository
+    await projectRepository
         .createQueryBuilder("project") 
         .update({isActive: false})
         .execute()
