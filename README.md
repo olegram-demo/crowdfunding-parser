@@ -5,11 +5,11 @@
 
 Установка
 -----------------
-1. Установить, если еще не установлена, nodejs версии 7.7 и выше. Желательно ставить последнюю версию. [Страница загрузок с сайта nodejs](https://nodejs.org/en/download/current/)
-2. [Скачать архив с исходниками](https://gitlab.com/CrowdfundingAggregator/parser/repository/master/archive.zip) и распокавать его, либо склонировать репозиторий командой `git clone https://gitlab.com/CrowdfundingAggregator/parser.git your_dir_name` (должен быть установлен git).
-3. Открыть консоль, перейти в директорию проекта.
-4. Выполнить команду `npm install`. Эта команда подтянет все зависимости. Процесс займет пару минут.
-5. Выполнить команду `npm run build-ts`. Данная команда соберет js файлы.
+1. Установить nodejs >= 7.7 [https://nodejs.org/en/download/current/](https://nodejs.org/en/download/current/)
+2. Установить yarn [https://yarnpkg.com/lang/en/docs/install/](https://yarnpkg.com/lang/en/docs/install/)
+3. [Скачать архив с исходниками](https://gitlab.com/CrowdfundingAggregator/parser/repository/master/archive.zip) и распокавать его, либо склонировать репозиторий командой `git clone https://gitlab.com/CrowdfundingAggregator/parser.git your_dir_name` (в этом случае должен быть установлен git).
+4. Открыть консоль, перейти в директорию проекта.
+5. Выполнить команду `yarn build`. Эта команда подтянет все зависимости и соберет js файлы. Процесс займет пару минут.
 
 Использование
 -------------

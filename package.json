@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
+    "build": "yarn install && yarn build-ts",
     "parse-crowdcube": "node dist/parse-crowdcube.js",
     "build-ts": "tsc",
     "watch-ts": "tsc -w"
