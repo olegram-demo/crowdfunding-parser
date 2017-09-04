@@ -39,12 +39,12 @@ export default class Crowdcube implements IPlatform {
         await a.delay(delay)
     }
 
-    getProjects = async () : Promise<Project[]> => {
+    getProjects = async (limit: number = 0) : Promise<Project[]> => {
         try {
             await this.init()
             await this.login();
             let projectsLinks = await this.getProjectsLinks()
-            //projectsLinks = projectsLinks.splice(0,1);
+            if (limit !== 0) projectsLinks = projectsLinks.splice(0, limit);
             const projectsCount = projectsLinks.length
 
             const result:Project[] = []

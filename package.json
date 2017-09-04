@@ -5,6 +5,7 @@
   "scripts": {
     "build": "yarn install && yarn build-ts",
     "get-projects": "node dist/get-projects.js",
+    "self-diagnostic": "node dist/self-diagnostic.js",
     "build-ts": "tsc",
     "watch-ts": "tsc -w"
   },
