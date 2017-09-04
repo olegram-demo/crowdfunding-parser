@@ -1,10 +1,10 @@
-import IPlatform from "../interfaces/platform"
-import Project from "../entity/project"
+import IPlatform from "../../interfaces/platform"
+import Project from "../../entity/project"
 import * as phantom from "phantom"
-import {container, settings} from "../config/config"
-import ILogger from "../interfaces/logger"
+import {container, settings} from "../../config/config"
+import ILogger from "../../interfaces/logger"
 import {randomArrayElement} from "random-array-element-ts"
-import CrowdcubeError from "../exceptions/crowdcube"
+import CrowdcubeError from "../../exceptions/crowdcube"
 import * as $$ from "cheerio"
 const a = require("awaiting")
 const errToJson = require("utils-error-to-json")

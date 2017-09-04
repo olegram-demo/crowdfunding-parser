@@ -4,7 +4,7 @@
   "description": "",
   "scripts": {
     "build": "yarn install && yarn build-ts",
-    "parse-crowdcube": "node dist/parse-crowdcube.js",
+    "get-projects": "node dist/get-projects.js",
     "build-ts": "tsc",
     "watch-ts": "tsc -w"
   },

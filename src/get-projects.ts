@@ -1,5 +1,5 @@
 import "reflect-metadata"
-import Crowdcube from "./platforms/crowdcube"
+import Crowdcube from "./parsers/platforms/crowdcube"
 import {container} from "./config/config"
 import * as phantom from "phantom"
 import Project from "./entity/project"
