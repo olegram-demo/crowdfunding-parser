@@ -6,9 +6,9 @@ import * as phantom from "phantom"
 import ILogger from "./interfaces/logger"
 
 (async (): Promise<void> => {
-    const service = process.argv[2]
+    const service = process.argv.length > 2 ? process.argv[2] : null
     
-    if (service == "undefined" || service == "crowdcube") {
+    if (service === null || service == "crowdcube") {
         const browser = await container.get<Promise<phantom.PhantomJS>>("Browser")
         const logger = container.get<ILogger>("ParsersLogger")
         logger.info("Выполняется проверка парсера площадки crowdcube.com")
