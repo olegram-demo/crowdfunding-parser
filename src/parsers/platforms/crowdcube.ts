@@ -1,43 +1,24 @@
+import ParserBase from "../parser-base"
 import IPlatform from "../../interfaces/platform"
 import Project from "../../entity/project"
-import * as phantom from "phantom"
+//import * as phantom from "phantom"
 import {container, settings} from "../../config/config"
-import ILogger from "../../interfaces/logger"
+//import ILogger from "../../interfaces/logger"
 import {randomArrayElement} from "random-array-element-ts"
 import CrowdcubeError from "../../exceptions/crowdcube"
 import * as $$ from "cheerio"
-const a = require("awaiting")
 const errToJson = require("utils-error-to-json")
 var trim = require('condense-whitespace')
 declare var $:any
 declare var window:any
 declare var document:any
 
-export default class Crowdcube implements IPlatform {
+export default class Crowdcube extends ParserBase  implements IPlatform {
 
-    protected readonly PLATFORM_NAME = "crowdcube"
+    protected name = "crowdcube"
+    
     protected readonly BASE_URL = "https://www.crowdcube.com"
     protected readonly OPERATION_MAX_TRY = 10
-
-    protected browser: phantom.PhantomJS
-    protected logger: ILogger
-    protected page: phantom.WebPage
-
-    constructor (browser: phantom.PhantomJS)
-    {
-        this.browser = browser
-        this.logger = container.get("ParsersLogger")
-    }
-
-    log = (level:string, msg: string): void => {
-        this.logger.log(level, `[CROWDCUBE] ${msg}`)
-    }
-
-    randomDelay = async (min : number, max: number, log = true): Promise<void> => {
-        let delay = Math.random() * (max - min) + min;
-        if (log) this.log('info', `Ожидаем ${Math.round(delay/10)/100} сек.`)
-        await a.delay(delay)
-    }
 
     getProjects = async (limit: number = 0) : Promise<Project[]> => {
         try {
@@ -62,11 +43,6 @@ export default class Crowdcube implements IPlatform {
             this.log('error', `${msg} ${JSON.stringify(errToJson(err))}`);
             throw new CrowdcubeError(msg)
         }
-    }
-
-    protected init = async () : Promise<void> => {
-        this.page = await this.browser.createPage()
-        await this.page.property('viewportSize', {width: 1024, height: 768});
     }
 
     protected login = async () : Promise<void> => {
@@ -101,7 +77,7 @@ export default class Crowdcube implements IPlatform {
             }, account);
             
             // TODO Переделать по нормальному
-            await a.delay(5000)
+            await this.delay(5000)
             html = await this.page.property("content")
             if (!this.isLoggedIn(html)) {
                 this.log('error', `Не удалось выполнить вход под login: ${account.login} password: ${account.password}`)
@@ -160,7 +136,7 @@ export default class Crowdcube implements IPlatform {
                 await this.page.evaluate(function() {
                     window.document.body.scrollTop = document.body.scrollHeight;
                 })
-                await a.delay(5000)
+                await this.delay(5000)
                 html = await this.page.property("content")
                 let projectCountAfterScroll = (this.getProjectsCount(html))
             } while (projectsCountBeforeScroll < projectsCountAfterScroll)
@@ -258,7 +234,7 @@ export default class Crowdcube implements IPlatform {
 
     protected createProjectFromHtml = (html:any) : Project => {
         const project = new Project()
-        project.platform = this.PLATFORM_NAME,
+        project.platform = this.name,
         project.companyName = this.getCompanyName(html)
         project.investmentType = this.getInvestmentType(html)
         project.taxIncentiveType = this.getTaxIncentiveType(html)
