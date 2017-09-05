@@ -1,6 +1,7 @@
 import * as phantom from "phantom"
-import {container} from "../config/config"
+import {container, settings} from "../config/config"
 import ILogger from "../interfaces/logger"
+import {randomArrayElement} from "random-array-element-ts"
 const a = require("awaiting")
 
 export default class ParserBase {
@@ -34,7 +35,13 @@ export default class ParserBase {
 
     protected init = async () : Promise<void> => {
         this.page = await this.browser.createPage()
-        await this.page.property('viewportSize', {width: 1024, height: 768});
+        await this.page.property('viewportSize', settings.browser.pageSize);
+        await this.page.property('settings', {
+            userAgent: randomArrayElement(settings.browser.userAgent),
+            resourceTimeout: settings.browser.resourceTimeout,
+            javascriptEnabled: settings.browser.javascriptEnabled,
+            loadImages: settings.browser.loadImages
+        });
     }
 
 }
