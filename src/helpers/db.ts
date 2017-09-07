@@ -1,12 +1,12 @@
-import {container} from "../config/config"
+import ioc from "../config/ioc"
 import {Connection} from "typeorm"
 import ILogger from "../interfaces/logger"
 import Project from "../entity/project"
 
 export async function saveProjects(projects: Project[]) : Promise<void> {
-    const logger = container.get<ILogger>("ParsersLogger")
+    const logger = ioc.get<ILogger>("ParsersLogger")
     logger.info("Cохраняем проекты в БД.")
-    const connection = await container.get<Promise<Connection>>("DB")
+    const connection = await ioc.get<Promise<Connection>>("DB")
     const projectRepository = connection.getRepository(Project)
 
     await projectRepository

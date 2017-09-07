@@ -1,5 +1,6 @@
-import * as phantom from "phantom"
-import {container, settings} from "../config/config"
+const puppeteer = require('puppeteer');
+import settings from "../config/config"
+import ioc from "../config/ioc"
 import ILogger from "../interfaces/logger"
 import {randomArrayElement} from "random-array-element-ts"
 const a = require("awaiting")
@@ -8,14 +9,13 @@ export default class ParserBase {
     
     protected name: string = ""
     
-    protected browser: phantom.PhantomJS
-    protected page: phantom.WebPage
+    protected browser: any
     protected logger: ILogger
 
-    constructor (browser: phantom.PhantomJS)
+    constructor (browser: any)
     {
         this.browser = browser
-        this.logger = container.get("ParsersLogger")
+        this.logger = ioc.get("ParsersLogger")
     }
 
     protected log = (level:string, msg: string): void => {
@@ -31,17 +31,6 @@ export default class ParserBase {
 
     protected delay = async (ms : number): Promise<void> => {
         await a.delay(ms)
-    }
-
-    protected init = async () : Promise<void> => {
-        this.page = await this.browser.createPage()
-        await this.page.property('viewportSize', settings.browser.pageSize);
-        await this.page.property('settings', {
-            userAgent: randomArrayElement(settings.browser.userAgent),
-            resourceTimeout: settings.browser.resourceTimeout,
-            javascriptEnabled: settings.browser.javascriptEnabled,
-            loadImages: settings.browser.loadImages
-        });
     }
 
 }

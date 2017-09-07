@@ -1,12 +1,12 @@
 import {Container} from "inversify"
-import * as qwe from "inversify"
 import ILogger from "../interfaces/logger"
 import WinstonLogger from "../loggers/winston"
 import * as winston from "winston"
-import * as phantom from "phantom"
 import {Connection, createConnection} from "typeorm"
 import Project from "../entity/project"
 import * as moment from "moment"
+const puppeteer = require('puppeteer');
+import settings from "../config/config"
 
 const container = new Container()
 const browserLogger = new WinstonLogger({
@@ -18,13 +18,8 @@ const browserLogger = new WinstonLogger({
 
 container.bind<ILogger>("BrowserLogger").toConstantValue(browserLogger)
 
-container.bind<Promise<phantom.PhantomJS>>("Browser").toConstantValue(phantom.create([], {
-    'logger': {
-        warn: browserLogger.warning,
-        debug: browserLogger.debug,
-        error: browserLogger.error,
-        info: browserLogger.info
-    }
+container.bind<Promise<any>>("Browser").toConstantValue(puppeteer.launch({
+    headless: settings.browser.headless
 }))
 
 container.bind<ILogger>("ParsersLogger").toConstantValue(new (WinstonLogger)({
