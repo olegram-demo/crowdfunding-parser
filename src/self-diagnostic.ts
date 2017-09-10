@@ -27,8 +27,9 @@ import ILogger from "./interfaces/logger"
         logger.info("Выполняется проверка парсера similarweb")
         try {
             const project = new Project()
-            project.companyName = "Onedox"
+            project.companyName = "diagnostic"
             project.web = "onedox.com"
+            //project.web = "fishyfilaments.com"
             const parser = new Similarweb(browser)
             const data = await parser.getData(project)
             logger.info("Парсер similarweb исправен.")

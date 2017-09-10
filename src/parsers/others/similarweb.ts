@@ -47,12 +47,13 @@ export default class Similarweb extends ParserBase {
 
             const similarwebData = this.createEntityFromHtml(await page.content())
             similarwebData.url = page.url()
-            
-            const androidAppData = await this.getAndroidData(similarwebData.androidUrl, page)
-            similarwebData.androidInstalls = androidAppData.installs
-            similarwebData.androidRating = androidAppData.rating
-            similarwebData.androidVotes = androidAppData.votes
-            
+
+            if (similarwebData.androidUrl !== null) {
+                const androidAppData = await this.getAndroidData(similarwebData.androidUrl, page)
+                similarwebData.androidInstalls = androidAppData.installs
+                similarwebData.androidRating = androidAppData.rating
+                similarwebData.androidVotes = androidAppData.votes
+            }
             this.log('debug', JSON.stringify(similarwebData))
             return similarwebData
 
@@ -84,7 +85,8 @@ export default class Similarweb extends ParserBase {
     }
 
     protected getAndroidUrl = (html:any) : string => {
-        return this.BASE_URL + $(html).find("div.stickyHeader-storeName:contains('Google Play')").next().attr("href")
+        const href = $(html).find("div.stickyHeader-storeName:contains('Google Play')").next().attr("href")
+        return href == undefined ? null : this.BASE_URL + href
     }
 
     protected getGlobalRank = (html:any) : number => {
