@@ -23,6 +23,20 @@ import ILogger from "./interfaces/logger"
         }
     }
 
+    if (service === null || service == "similarweb") {
+        logger.info("Выполняется проверка парсера similarweb")
+        try {
+            const project = new Project()
+            project.companyName = "Onedox"
+            project.web = "onedox.com"
+            const parser = new Similarweb(browser)
+            const data = await parser.getData(project)
+            logger.info("Парсер similarweb исправен.")
+        } catch(err) {
+            logger.error("Парсер similarweb неисправен.")
+        }
+    }
+
     browser.close()
     process.exit(0)
 })()
