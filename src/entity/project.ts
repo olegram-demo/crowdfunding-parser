@@ -1,7 +1,13 @@
-import {Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn} from "typeorm"
+import {Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, OneToOne} from "typeorm"
+import SimilarwebData from "./similarweb"
 
 @Entity()
 export default class Project {
+
+    @OneToOne(type => SimilarwebData, similarwebData => similarwebData.project, {
+        cascadeAll: true,
+    })
+    similarwebData: SimilarwebData;
 
     @PrimaryGeneratedColumn()
     id: number

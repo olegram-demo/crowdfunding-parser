@@ -1,7 +1,12 @@
-import {Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn} from "typeorm"
+import {Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, OneToOne, JoinColumn} from "typeorm"
+import Project from "./project"
 
 @Entity()
 export default class SimilarwebData {
+
+    @OneToOne(type => Project, project => project.similarwebData)
+    @JoinColumn()
+    project: Project;
 
     @PrimaryGeneratedColumn()
     id: number
@@ -15,28 +20,28 @@ export default class SimilarwebData {
     @Column({nullable: true})
     androidUrl: string
 
-    @Column()
+    @Column({nullable: true})
     globalRank: number
 
-    @Column()
+    @Column({nullable: true})
     countryRank: number
 
-    @Column()
+    @Column({nullable: true})
     totalVisits: string
 
-    @Column()
+    @Column({nullable: true})
     averageVisitDuration: string
     
-    @Column()
+    @Column({nullable: true})
     pagesPerVisit: number
 
-    @Column()
+    @Column({nullable: true})
     bounceRate: number
 
-    @Column()
+    @Column({nullable: true})
     countriesData: string
 
-    @Column()
+    @Column({nullable: true})
     trafficData: string
 
     @Column({nullable: true})

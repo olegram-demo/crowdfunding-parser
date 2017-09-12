@@ -1,7 +1,8 @@
 import ioc from "../config/ioc"
-import {Connection} from "typeorm"
+import {Connection, JoinColumn} from "typeorm"
 import ILogger from "../interfaces/logger"
 import Project from "../entity/project"
+import SimilarwebData from "../entity/similarweb"
 
 export async function saveProjects(projects: Project[]) : Promise<void> {
     const logger = ioc.get<ILogger>("ParsersLogger")
@@ -17,13 +18,27 @@ export async function saveProjects(projects: Project[]) : Promise<void> {
     let updatedProjectsCount = 0;
     for (let project of projects) {
         project.isActive = true
-        const savedProject = await projectRepository.findOne({companyName: project.companyName})
-        if (savedProject !== undefined) {
-            updatedProjectsCount++
-            project.id = savedProject.id
+        
+        const savedProject = await connection.getRepository(Project).createQueryBuilder("project")
+            .leftJoinAndSelect("project.similarwebData", "similarwebData")
+            .where("project.companyName = :name", { name: project.companyName })
+            .getOne();
+    
+        if (savedProject == undefined) {
+            await connection.manager.save(project)
+            continue
         }
 
-        await connection.manager.save(project)
+        updatedProjectsCount++
+        
+        connection
+            .createQueryBuilder()
+            .delete()
+            .from(SimilarwebData)
+            .where("projectId = :projectId", { projectId: savedProject.id })
+            .execute();
+       
+        projectRepository.updateById(savedProject.id, project)
     }
     
     logger.info(

@@ -23,7 +23,7 @@ export default class ParserBase {
         this.logger.log(level, `${prefix}${msg}`)
     }
 
-    protected randomDelay = async (min : number, max: number, log = true): Promise<void> => {
+    randomDelay = async (min : number, max: number, log = true): Promise<void> => {
         let delay = Math.random() * (max - min) + min;
         if (log) this.log('info', `Ожидаем ${Math.round(delay/10)/100} сек.`)
         await a.delay(delay)

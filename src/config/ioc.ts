@@ -4,6 +4,7 @@ import WinstonLogger from "../loggers/winston"
 import * as winston from "winston"
 import {Connection, createConnection} from "typeorm"
 import Project from "../entity/project"
+import Similarweb from "../entity/similarweb"
 import * as moment from "moment"
 const puppeteer = require('puppeteer');
 import settings from "../config/config"
@@ -55,7 +56,7 @@ container.bind<Promise<Connection>>("DB").toConstantValue(createConnection({
     "type": "sqlite",
     "database": "db.sqlite3",
     "autoSchemaSync": true,
-    "entities": [Project],
+    "entities": [Project, Similarweb]
 }))
 
 export default container
