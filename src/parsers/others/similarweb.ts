@@ -13,7 +13,7 @@ export default class Similarweb extends ParserBase {
     protected name = "similarweb"
     protected readonly BASE_URL = "https://www.similarweb.com"
 
-    protected readonly OPERATION_MAX_TRY = 2
+    protected readonly OPERATION_MAX_TRY = 5
 
     getData = async (project: Project) : Promise<SimilarwebData> => {
         const searchString = project.web
@@ -31,13 +31,7 @@ export default class Similarweb extends ParserBase {
             }
             this.log('info', msg)
 
-            try {
-                await page.goto(`${this.BASE_URL}/website/${searchString}`, {timeout: settings.browser.timeout});
-            } catch(e) {
-                this.log('error', "Ошибка при открытии страницы статистики.")
-                continue
-            }
-
+            page.goto(`${this.BASE_URL}/website/${searchString}`, {timeout: settings.browser.timeout});
             try {
                 await page.waitForSelector('.stickyHeader-nameText', {timeout: 10000})
             } catch(e) {
