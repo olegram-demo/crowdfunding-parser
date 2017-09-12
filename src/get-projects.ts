@@ -13,8 +13,13 @@ import {saveProjects} from "./helpers/db"
         
         const similarweb = new Similarweb(browser)
         for (let project of projects) {
-            project.similarwebData = await similarweb.getData(project)
-            await similarweb.randomDelay(4000, 7000)
+            try {
+                project.similarwebData = await similarweb.getData(project)
+            } catch(err) {
+                continue   
+            } finally {
+                await similarweb.randomDelay(4000, 7000)
+            }
         }
 
         saveProjects(projects)

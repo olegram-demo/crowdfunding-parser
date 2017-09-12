@@ -35,6 +35,11 @@ export default class Similarweb extends ParserBase {
             try {
                 await page.waitForSelector('.stickyHeader-nameText', {timeout: 10000})
             } catch(e) {
+                if (this.isNotInDatabase(await page.content())) {
+                    const err = `Сайта ${searchString} нет в базе similarweb.`
+                    this.log('error', err)
+                    throw new SimilarwebError(err)
+                }
                 this.log('error', "Неизвестная разметка страницы статистики.")
                 continue
             }
@@ -58,6 +63,10 @@ export default class Similarweb extends ParserBase {
         throw new SimilarwebError(err)
     }
 
+    protected isNotInDatabase = (html:any): boolean => {
+        return $(html).find(".error-search-title") !== null
+    }
+
     protected createEntityFromHtml = (html:any) : SimilarwebData => {
         const entity = new SimilarwebData()
         entity.appleUrl = this.getAppleUrl(html)
@@ -75,7 +84,8 @@ export default class Similarweb extends ParserBase {
     }
 
     protected getAppleUrl = (html:any) : string => {
-        return this.BASE_URL + $(html).find("div.stickyHeader-storeName:contains('App Store')").next().attr("href")
+        const href = $(html).find("div.stickyHeader-storeName:contains('App Store')").next().attr("href")
+        return href == undefined ? null : this.BASE_URL + href
     }
 
     protected getAndroidUrl = (html:any) : string => {
