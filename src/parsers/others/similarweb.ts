@@ -7,6 +7,7 @@ import SimilarwebData from "../../entity/similarweb"
 var trim = require('condense-whitespace')
 import Project from "../../entity/project"
 const errToJson = require("utils-error-to-json")
+declare var window:any
 
 export default class Similarweb extends ParserBase {
     
@@ -31,11 +32,16 @@ export default class Similarweb extends ParserBase {
             }
             this.log('info', msg)
 
-            page.goto(`${this.BASE_URL}/website/${searchString}`, {timeout: settings.browser.timeout});
+            let url = `${this.BASE_URL}/website/${searchString}`
+            await page.evaluate((url:any) => {
+                window.location = url
+            }, url);
+
             try {
-                await page.waitForSelector('.stickyHeader-nameText', {timeout: 10000})
+                await page.waitForSelector('.stickyHeader-nameText', {timeout: 12000})
             } catch(e) {
-                if (this.isNotInDatabase(await page.content())) {
+                const html = await page.content()
+                if (this.isNotInDatabase(html)) {
                     const err = `Сайта ${searchString} нет в базе similarweb.`
                     this.log('error', err)
                     throw new SimilarwebError(err)
@@ -64,7 +70,7 @@ export default class Similarweb extends ParserBase {
     }
 
     protected isNotInDatabase = (html:any): boolean => {
-        return $(html).find(".error-search-title") !== null
+        return $(html).find(".error-search-title").html() !== null
     }
 
     protected createEntityFromHtml = (html:any) : SimilarwebData => {
@@ -149,7 +155,9 @@ export default class Similarweb extends ParserBase {
             }
             this.log('info', msg)
         
-            page.goto(url);
+            await page.evaluate((url:any) => {
+                window.location = url
+            }, url);
             try {
                 await page.waitForSelector('div.appAnalysisHeader-aboutInner', {timeout: 10000})
             } catch(e) {
