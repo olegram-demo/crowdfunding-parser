@@ -30,5 +30,5 @@
 -----------------
 Для проверки парсеров можно воспользоваться скриптом самодиагностики (запускается командой `yarn self-diagnostic`). Этот скрипт последовательно проверит все парсеры и выведет результаты в консоль. Можно проверить отдельный парсер, передав его в качестве параметра.
 
-`yarn self-diagnostic crowdcube` - проверит парсер площадки crowdcube.com
-`yarn self-diagnostic similarweb` - проверит парсер similarweb
+- `yarn self-diagnostic crowdcube` - проверит парсер площадки crowdcube.com
+- `yarn self-diagnostic similarweb` - проверит парсер similarweb
