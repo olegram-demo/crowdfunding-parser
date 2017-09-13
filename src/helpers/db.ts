@@ -3,6 +3,7 @@ import {Connection, JoinColumn} from "typeorm"
 import ILogger from "../interfaces/logger"
 import Project from "../entity/project"
 import SimilarwebData from "../entity/similarweb"
+import CrunchbaseData from "../entity/crunchbase"
 
 export async function saveProjects(projects: Project[]) : Promise<void> {
     const logger = ioc.get<ILogger>("ParsersLogger")
@@ -20,7 +21,7 @@ export async function saveProjects(projects: Project[]) : Promise<void> {
         project.isActive = true
         
         const savedProject = await connection.getRepository(Project).createQueryBuilder("project")
-            .leftJoinAndSelect("project.similarwebData", "similarwebData")
+            //.leftJoinAndSelect("project.similarwebData", "similarwebData")
             .where("project.companyName = :name", { name: project.companyName })
             .getOne();
     
@@ -35,6 +36,13 @@ export async function saveProjects(projects: Project[]) : Promise<void> {
             .createQueryBuilder()
             .delete()
             .from(SimilarwebData)
+            .where("projectId = :projectId", { projectId: savedProject.id })
+            .execute();
+
+        connection
+            .createQueryBuilder()
+            .delete()
+            .from(CrunchbaseData)
             .where("projectId = :projectId", { projectId: savedProject.id })
             .execute();
        

@@ -1,6 +1,7 @@
 import "reflect-metadata"
 import Crowdcube from "./parsers/platforms/crowdcube"
 import Similarweb from "./parsers/others/similarweb"
+import CrunchbaseParser from "./parsers/others/crunchbase"
 import Project from "./entity/project"
 import ioc from "./config/ioc"
 import ILogger from "./interfaces/logger"
@@ -18,6 +19,10 @@ import ILogger from "./interfaces/logger"
 
     if (service === null || service == "similarweb") {
         await similarwebDiagnostic(browser, logger)
+    }
+
+    if (service === null || service == "crunchbase") {
+        await crunchbaseDiagnostic(browser, logger)
     }
 
     browser.close()
@@ -47,5 +52,18 @@ async function similarwebDiagnostic(browser: any, logger: ILogger): Promise<void
         logger.info("Парсер similarweb исправен.")
     } catch(err) {
         logger.error("Парсер similarweb неисправен.")
+    }
+}
+
+async function crunchbaseDiagnostic(browser: any, logger: ILogger): Promise<void> {
+    logger.info("Выполняется проверка парсера crunchbase")
+    try {
+        const project = new Project()
+        project.companyName = "onedox"
+        const parser = new CrunchbaseParser(browser)
+        const data = await parser.getData(project)
+        logger.info("Парсер crunchbase исправен.")
+    } catch(err) {
+        logger.error("Парсер crunchbase неисправен.")
     }
 }

@@ -9,7 +9,7 @@ import Project from "../../entity/project"
 const errToJson = require("utils-error-to-json")
 declare var window:any
 
-export default class Similarweb extends ParserBase {
+export default class SimilarwebParser extends ParserBase {
     
     protected name = "similarweb"
     protected readonly BASE_URL = "https://www.similarweb.com"
@@ -27,7 +27,7 @@ export default class Similarweb extends ParserBase {
         do {
             let msg = `Получаем статистику по проекту ${searchString}`
             if (currentTry > 1) {
-                await this.randomDelay(3000, 5000)
+                await this.randomDelay(5000, 7000)
                 msg += ` (попытка ${currentTry}).`
             }
             this.log('info', msg)

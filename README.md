@@ -14,7 +14,7 @@
 
 Использование
 -------------
-На данный момент реализован парсинг crowdcube и similarweb. 
+На данный момент реализован парсинг crowdcube, similarweb, cranchbase. 
 
 Для получения проектов необходимо выполнить команду `yarn get-projects`. 
 
@@ -32,3 +32,4 @@
 
 - `yarn self-diagnostic crowdcube` - проверит парсер площадки crowdcube.com
 - `yarn self-diagnostic similarweb` - проверит парсер similarweb
+- `yarn self-diagnostic cranchbase` - проверит парсер cranchbase

@@ -1,6 +1,7 @@
 import "reflect-metadata"
 import Crowdcube from "./parsers/platforms/crowdcube"
-import Similarweb from "./parsers/others/similarweb"
+import SimilarwebParser from "./parsers/others/similarweb"
+import CrunchbaseParser from "./parsers/others/crunchbase"
 import ioc from "./config/ioc"
 import Project from "./entity/project"
 import {saveProjects} from "./helpers/db"
@@ -11,15 +12,16 @@ import {saveProjects} from "./helpers/db"
         const platform = new Crowdcube(browser)
         const projects = await platform.getProjects()
         
-        const similarweb = new Similarweb(browser)
+        const similarwebParser = new SimilarwebParser(browser)
+        const crunchbaseParser = new CrunchbaseParser(browser)
         for (let project of projects) {
             try {
-                project.similarwebData = await similarweb.getData(project)
-            } catch(err) {
-                continue   
-            } finally {
-                await similarweb.randomDelay(4000, 7000)
-            }
+                project.similarwebData = await similarwebParser.getData(project)
+            } catch(err) {}
+
+            try {
+                project.crunchbaseData = await crunchbaseParser.getData(project)
+            } catch(err) {}
         }
 
         saveProjects(projects)

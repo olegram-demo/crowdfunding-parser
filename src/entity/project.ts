@@ -1,5 +1,6 @@
 import {Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, OneToOne} from "typeorm"
 import SimilarwebData from "./similarweb"
+import CrunchbaseData from "./crunchbase"
 
 @Entity()
 export default class Project {
@@ -8,6 +9,11 @@ export default class Project {
         cascadeAll: true,
     })
     similarwebData: SimilarwebData;
+
+    @OneToOne(type => CrunchbaseData, crunchbaseData => crunchbaseData.project, {
+        cascadeAll: true,
+    })
+    crunchbaseData: CrunchbaseData;
 
     @PrimaryGeneratedColumn()
     id: number
