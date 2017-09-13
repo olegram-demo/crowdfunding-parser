@@ -13,31 +13,39 @@ import ILogger from "./interfaces/logger"
     const logger = ioc.get<ILogger>("ParsersLogger")
 
     if (service === null || service == "crowdcube") {
-        logger.info("Выполняется проверка парсера площадки crowdcube.com")
-        try {
-            const platform = new Crowdcube(browser)
-            const projects = await platform.getProjects(1)
-            logger.info("Парсер crowdcube.com исправен.")
-        } catch(err) {
-            logger.error("Парсер crowdcube.com неисправен.")
-        }
+        await crowdcubeDiagnostic(browser, logger)
     }
 
     if (service === null || service == "similarweb") {
-        logger.info("Выполняется проверка парсера similarweb")
-        try {
-            const project = new Project()
-            project.companyName = "diagnostic"
-            project.web = "onedox.com"
-            //project.web = "fishyfilaments.com"
-            const parser = new Similarweb(browser)
-            const data = await parser.getData(project)
-            logger.info("Парсер similarweb исправен.")
-        } catch(err) {
-            logger.error("Парсер similarweb неисправен.")
-        }
+        await similarwebDiagnostic(browser, logger)
     }
 
     browser.close()
     process.exit(0)
 })()
+
+async function crowdcubeDiagnostic(browser: any, logger: ILogger): Promise<void> {
+    logger.info("Выполняется проверка парсера площадки crowdcube.com")
+    try {
+        const platform = new Crowdcube(browser)
+        const projects = await platform.getProjects(1)
+        logger.info("Парсер crowdcube.com исправен.")
+    } catch(err) {
+        logger.error("Парсер crowdcube.com неисправен.")
+    }
+}
+
+async function similarwebDiagnostic(browser: any, logger: ILogger): Promise<void> {
+    logger.info("Выполняется проверка парсера similarweb")
+    try {
+        const project = new Project()
+        project.companyName = "diagnostic"
+        project.web = "onedox.com"
+        //project.web = "fishyfilaments.com"
+        const parser = new Similarweb(browser)
+        const data = await parser.getData(project)
+        logger.info("Парсер similarweb исправен.")
+    } catch(err) {
+        logger.error("Парсер similarweb неисправен.")
+    }
+}
