@@ -130,12 +130,12 @@ export default class Crowdcube extends ParserBase  implements IPlatform {
             let projectsCountBeforeScroll:number
             let projectsCountAfterScroll:number
             do {
-                let projectsCountBeforeScroll = this.getProjectsCount(await page.content())
+                projectsCountBeforeScroll = this.getProjectsCount(await page.content())
                 await page.evaluate(() => {
-                    window.document.body.scrollTop = document.body.scrollHeight
+                    window.scrollTo(0,document.body.scrollHeight);
                 });
-                await this.delay(4000)
-                let projectCountAfterScroll = (this.getProjectsCount(await page.content()))
+                await this.delay(6000)
+                projectsCountAfterScroll = this.getProjectsCount(await page.content())
             } while (projectsCountBeforeScroll < projectsCountAfterScroll)
 
             const links = this.extractProjectsLinks(await page.content())
