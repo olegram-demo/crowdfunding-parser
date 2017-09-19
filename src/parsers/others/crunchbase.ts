@@ -42,7 +42,7 @@ export default class CrunchbaseParser extends ParserBase {
             if (this.is404Page(html)) {
                 const err = `Проект ${project.companyName} не найден на crunchbase.`
                 this.log('error', err)
-                throw new CrunchbaseError(err)
+                break
             }
 
             if (!this.isProjectPage(html)) {
@@ -53,10 +53,16 @@ export default class CrunchbaseParser extends ParserBase {
             const crunchbaseData = this.createEntityFromHtml(await page.content())
             crunchbaseData.url = page.url()
 
+            await page.close()
             this.log('debug', JSON.stringify(crunchbaseData))
             return crunchbaseData
 
         } while (currentTry++ < this.OPERATION_MAX_TRY)
+
+        await page.close()
+        const err = `Не удалось получить данные по проекту ${project.companyName}`
+        this.log('error', err)
+        throw new CrunchbaseError(err)
     }
 
     protected getResolvedUrl(project: Project) {

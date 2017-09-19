@@ -42,8 +42,7 @@ export default class Crowdcube extends ParserBase  implements IPlatform {
             this.log('error', `${msg} ${JSON.stringify(errToJson(err))}`);
             throw new CrowdcubeError(msg)
         } finally {
-            // Почему-то не работает. Надо разбираться
-            // await page.close()
+            await page.close()
         }
     }
 

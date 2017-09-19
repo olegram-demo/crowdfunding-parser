@@ -44,7 +44,7 @@ export default class SimilarwebParser extends ParserBase {
                 if (this.isNotInDatabase(html)) {
                     const err = `Сайта ${searchString} нет в базе similarweb.`
                     this.log('error', err)
-                    throw new SimilarwebError(err)
+                    break
                 }
                 this.log('error', "Неизвестная разметка страницы статистики.")
                 continue
@@ -60,10 +60,13 @@ export default class SimilarwebParser extends ParserBase {
                 similarwebData.androidVotes = androidAppData.votes
             }
             this.log('debug', JSON.stringify(similarwebData))
+            
+            await page.close()
             return similarwebData
 
         } while (currentTry++ < this.OPERATION_MAX_TRY)
             
+        await page.close()
         const err = `Не удалось получить статистику по ${searchString}`
         this.log('error', err)
         throw new SimilarwebError(err)
