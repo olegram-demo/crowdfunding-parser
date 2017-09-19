@@ -32,4 +32,4 @@
 
 - `yarn self-diagnostic crowdcube` - проверит парсер площадки crowdcube.com
 - `yarn self-diagnostic similarweb` - проверит парсер similarweb
-- `yarn self-diagnostic cranchbase` - проверит парсер cranchbase
+- `yarn self-diagnostic crunchbase` - проверит парсер crunchbase
